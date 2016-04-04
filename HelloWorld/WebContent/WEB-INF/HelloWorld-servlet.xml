@@ -14,22 +14,25 @@
 			value="com/helloworld/models/service/validator/properties/user" />
 		<property name="defaultEncoding" value="UTF-8"></property>
 	</bean>
-	
-	<bean
-		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+
+	<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 		<property name="paramName" value="lang" />
 	</bean>
-	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="en" />
 	</bean>
 	<bean class="com.helloworld.models.service.validator.UserValidator" />
 
+
+	
+	
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
-		
+
 	</bean>
 </beans>

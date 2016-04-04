@@ -9,35 +9,33 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-
 import com.helloworld.models.entity.User;
+import com.helloworld.models.entity.UserRole;
 import com.helloworld.models.repository.UserRepository;
 import com.helloworld.models.service.validator.UserValidator;
 
-
 @Service
-public class UserService {
+public class UserService  {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
 	private UserValidator userValidator;
 	
-	private void validate(User user,BindingResult result){
-		if(userRepository.findOneByUsername(user.getUsername()) != null){
+	private void validate(User user, BindingResult result) {
+		if (userRepository.findOneByUsername(user.getUsername()) != null) {
 			result.rejectValue("username", "existing.username");
 		}
-		if(userRepository.findOneByEmail(user.getEmail())!=null){
+		if (userRepository.findOneByEmail(user.getEmail()) != null) {
 			result.rejectValue("email", "existing.email");
 		}
 	}
-	
-	
+
 	public Boolean create(User user, BindingResult result) {
 		userValidator.validate(user, result);
 		validate(user, result);
-		if(result.hasErrors()){
+		if (result.hasErrors()) {
 			return false;
-		}else{
+		} else {
 			try {
 				MessageDigest md = MessageDigest.getInstance("MD5");
 				byte[] messageDigest = md.digest(user.getPassword().getBytes());
@@ -48,6 +46,8 @@ public class UserService {
 				}
 				user.setPassword(hashtext);
 				user.setId(UUID.randomUUID().toString());
+				user.getUserRoles().add(UserRole.USER);
+
 				userRepository.save(user);
 			} catch (NoSuchAlgorithmException e) {
 				throw new RuntimeException();
@@ -59,11 +59,12 @@ public class UserService {
 	public List<User> readAll() {
 		return userRepository.findAll();
 	}
-	
-	public User findOne(String username){
-		return userRepository.findOneByUsername(username);	
+
+	public User findOne(String username) {
+		return userRepository.findOneByUsername(username);
 	}
-	public User update(User user){
+
+	public User update(User user) {
 		User existingUser = userRepository.findOneByUsername(user.getUsername());
 		existingUser.setFirstname(user.getFirstname());
 		existingUser.setMiddlename(user.getMiddlename());
@@ -73,13 +74,15 @@ public class UserService {
 		existingUser.setDepartment(user.getDepartment());
 		return userRepository.save(existingUser);
 	}
-	
-	public Boolean delete(String username){
+
+	public Boolean delete(String username) {
 		User existingUser = userRepository.findOneByUsername(username);
-		if(existingUser == null){
+		if (existingUser == null) {
 			return false;
 		}
 		userRepository.delete(existingUser);
 		return true;
 	}
+
+	
 }

@@ -31,7 +31,10 @@ public class UserValidator implements Validator{
 			errors.rejectValue("password","notmatch.password");
 		}
 		if(user.getUsername().length() > 16){
-			errors.rejectValue("username", "size.username");
+			errors.rejectValue("username", "size.username.long");
+		}
+		if(user.getUsername().length() < 8){
+			errors.rejectValue("username", "size.username.short");
 		}
 	}
 }

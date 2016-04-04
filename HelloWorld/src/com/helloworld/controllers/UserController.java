@@ -3,8 +3,14 @@ package com.helloworld.controllers;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -56,8 +62,13 @@ public class UserController {
 
 	@RequestMapping(value = "/{username}", method = RequestMethod.GET)
 	public String showProfile(@PathVariable String username, ModelMap model) {
-		if (!model.containsAttribute("currentUser")) {
-			model.addAttribute("currentUser", userService.findOne(username));
+		User resultUser = userService.findOne(username);
+		if (resultUser != null){
+			model.addAttribute("currentUser", resultUser);
+			model.addAttribute("foundUser",true);
+		}else{
+			model.addAttribute("notFoundUser", true);
+			model.addAttribute("usernameNotFound", username);
 		}
 		return "profile";
 	}
@@ -80,4 +91,19 @@ public class UserController {
 		return "redirect:/user";
 	}
 
+	// @RequestMapping(value="/logout", method = RequestMethod.GET)
+	// public String logoutPage(HttpServletRequest req, HttpServletResponse
+	// res){
+	// Authentication auth =
+	// SecurityContextHolder.getContext().getAuthentication();
+	// if(auth!=null){
+	// new SecurityContextLogoutHandler().logout(req, res, auth);
+	// }
+	// return "redirect:";
+	// }
+	// @RequestMapping(value="/Access_Denied", method = RequestMethod.GET)
+	// public String accessDeniedPage(ModelMap model){
+	//
+	// return "accessDenied";
+	// }
 }

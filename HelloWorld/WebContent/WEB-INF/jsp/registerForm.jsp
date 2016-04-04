@@ -10,7 +10,7 @@
 </head>
 <body>
 	<h2>Register</h2>
-	
+	<a href="${pageContext.request.contextPath}/user">Back to User Management </a>
 	<form:form commandName="user" action="register" method="post">
 	<form:errors path="*" element="div"></form:errors>
 		<form:hidden path="id"/> 

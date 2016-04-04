@@ -9,23 +9,29 @@
 </head>
 <body>
 	<h2>Profile</h2>
-	<a href="${currentUser.username}/edit">Edit</a>
-	
+	<a href="${pageContext.request.contextPath}/user">Back to User Management </a>
 	<br/>
-	<label>Username: </label>
-	<c:out value="${currentUser.username }"></c:out>
-	<br/>
-	<label>FullName: </label>
-	<c:out value="${currentUser.fullname }"></c:out>
-	<br/>
-	<label>Job: </label>
-	<c:out value="${currentUser.job }"></c:out>
-	<br/>
-	<label>Email: </label>
-	<c:out value="${currentUser.email }"></c:out>
-	<br/>
-	<label>Deparment: </label>
-	<c:out value="${currentUser.department }"></c:out>
-	<br/>
+	<c:if test="${notFoundUser}">
+		<h2>Khong tim thay ${usernameNotFound}</h2>
+	</c:if>
+	<c:if test="${foundUser}">
+		<a href="${currentUser.username}/edit">Edit</a>
+		<br />
+		<label>Username: </label>
+		<c:out value="${currentUser.username }"></c:out>
+		<br />
+		<label>FullName: </label>
+		<c:out value="${currentUser.fullname }"></c:out>
+		<br />
+		<label>Job: </label>
+		<c:out value="${currentUser.job }"></c:out>
+		<br />
+		<label>Email: </label>
+		<c:out value="${currentUser.email }"></c:out>
+		<br />
+		<label>Deparment: </label>
+		<c:out value="${currentUser.department }"></c:out>
+		<br />
+	</c:if>
 </body>
 </html>
