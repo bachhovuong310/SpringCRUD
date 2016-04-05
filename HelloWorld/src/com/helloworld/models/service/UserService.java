@@ -45,6 +45,7 @@ public class UserService  {
 					hashtext = "0" + hashtext;
 				}
 				user.setPassword(hashtext);
+				user.setPassword_confirmation(null);
 				user.setId(UUID.randomUUID().toString());
 				user.getUserRoles().add(UserRole.USER);
 
